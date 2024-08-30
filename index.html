@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Sidebar Design</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/camanjs/4.1.2/caman.full.min.js"></script>
+
+
+</head>
+
+<body>
+
+    <form action="">
+        <input type="hidden" name="frames" value="" class="frames" id="frames">
+        <input type="hidden" name="sizes" value="" class="sizes" id="sizes">
+        <input type="hidden" name="outline" value="" class="outline" id="outline">
+        <input type="hidden" name="filter" value="" class="filter" id="filter">
+        <input type="hidden" name="url" class="url" id="imageURL">
+        <input type="hidden" name="url" class="url" id="imageURLupdated">
+
+    </form>
+    <!-- 
+    <div class="toggle-switch">
+        <input type="checkbox" id="toggleButton" class="toggle-input" onclick="toggleMode()">
+        <label for="toggleButton" class="toggle-label">
+            <span class="toggle-text">2D</span>
+        </label>
+    </div> -->
+    <div class=" tab-btn1112" onclick="openTab(event, 'imagePopup')">
+        <!-- <button class="tablinks"></button> -->
+        <i class="fa-regular fa-add"></i>
+    </div>
+    <!-- =================================================================================================
+                                Orientation Toggle 
+        ================================================================================================== -->
+    <!-- <div class="toggle-switch disabled">
+        <input type="checkbox" id="orientationToggle" class="toggle-input"disabled  onclick="toggleOrientation()">
+        <label for="orientationToggle" class="toggle-label">
+            <span class="toggle-text">Vertical</span>
+        </label>
+    </div> -->
+
+    <!-- =================================================================================================
+                                Orientation Toggle End
+        ================================================================================================== -->
+    <div class="container">
+
+        <div class="content" id="contentArea1">
+            <!-- <input type="file" id="customImage" accept="image/*" style="display: none;"> -->
+            <div id="frameContainer">
+                <div class="select-img-main" id="selectImage">
+                    <i class="fa-regular fa-image"></i>
+                    <p>Select Image</p>
+                </div>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                <img id="framePreview">
+            </div>
+
+        </div>
+        <div class="button-for-edit hidden">
+            <button><i class="fa-regular fa-pen-to-square"></i>Edit Or Replace Image</button>
+        </div>
+        <div class="edit-buttons hidden">
+            <div class="edit-buttons-inner">
+                <div class="flip-btn">
+                    <button style="cursor: pointer;"><i class="fa-solid fa-share-from-square"></i>Flip Orientation</button>
+                </div>
+                <div class="Rotate-Image">
+                    <button style="cursor: pointer;" id="rotateImageBtn"><i class="fa-solid fa-rotate-right"></i>Rotate Image</button>                </div>
+            </div>
+        </div>
+
+        <div class="apply-btn-main">
+            <div class="apply-btn-inner">
+                <div class="Cancle-btn">
+                    <button>Cancel</button>
+                </div>
+                <div class="apply-btn">
+                <button>Apply</button>
+            </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="tabs">
+                <div class="tab-btn1" id="woodenTab" onclick="openTab(event, 'Wooden-option'); setbuttontabsactive(this)">
+                    <button class="tablinks">Wooden Frame</button> 
+                    <i class="fa-regular fa-square"></i>
+                </div>
+            
+                <div class="tab-btn1" id="sizesTab" onclick="openTab(event, 'Sizes'); setbuttontabsactive(this)">
+                    <button class="tablinks">Sizes</button> 
+                    <i class="fa-regular fa-square"></i>
+                </div>
+            
+                <div class="tab-btn1" id="outlinesTab" onclick="openTab(event, 'Outlines'); setbuttontabsactive(this)" style="display: none;">
+                    <button class="tablinks">Outlines</button> 
+                    <i class="fa-solid fa-square"></i>
+                </div>
+                
+                <div class="tab-btn1" id="filtersTab" onclick="openTab(event, 'Filters'); setbuttontabsactive(this)">
+                    <button class="tablinks">Filters</button> 
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+            </div>
+            
+
+
+
+
+            <div id="Image" class="tabcontent for-no-display">
+                <!-- Image Upload Button for Sidebar -->
+                <button id="sidebarUploadBtn" class="upload-btn" style="display: none;">Upload Image in Sidebar</button>
+                <input type="file" id="sidebarFileInput" accept="image/*" style="display:none;">
+
+            </div>
+
+            <div id="Wooden-option" class="tabcontent active">
+                <div class="sizef">
+                    <h3 id="landscapeTitle" class="hedaing">Wooden Back Frame</h3>
+                    <button id="yesButton" class="with-frame-button" onclick="hideOutlinesTab(); setActiveButton('yesButton')">
+                        <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg" alt="" />
+                        <p>YES<br /></p>
+                    </button>
+                </div>
+                <br />
+                <div class="sizewf">
+                    <button id="noButton" onclick="showOutlinesTab(); setActiveButton('noButton')">
+                        <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg" alt="" />
+                        <p>NO<br /></p>
+                    </button>
+                </div>
+                
+                
+            
+                <br />
+                <!-- <div class="outlines sizewf">
+                  <button onclick="toggleFrame(true,'outlines')" class="outlines-button">
+                    <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg" alt="" />
+                    <p>Out Lines<br /></p>
+                  </button>
+                </div> -->
+                
+            </div>
+
+            <div id="Sizes" class="tabcontent outlines">
+                <div class="with-frame" id="with-frame-prices">
+                    <h3 id="Orientation" class="sizef ">Orientation</h3>
+                    <div  class="sizef sizefbtn" style=" align-items: self-start;">
+
+                        <button onclick="toggleFrame(true, 'portraitf', this)" id="p_sizes">
+                            <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                alt="" />
+                            <p>Portrait Sizes<br /></p>
+                        </button>
+                        <br>
+                        <button onclick="toggleFrame(true, 'landscapef', this)" id="land_sizes">
+                            <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                alt="" />
+                            <p>Landscape Sizes<br /></p>
+                        </button>
+                    </div>
+                    <div class="landscapef" id="landscapef"style="display: none;">
+                        <div class="size1">
+                            <h3 id="landscapeTitle" class="dropdownf">Landscape Sizes</h3>
+                            <button onclick="applySize(600, 300);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>200cm x 100cm<br />€148.00</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(600, 280);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>200cm x 80cm<br />€124.69</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(600, 260);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>200cm x 60cm<br />€101.37</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(600, 250);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>200cm x 50cm<br />€89.71</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(570, 300);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>170cm x 100cm<br />€130.51</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(570, 280);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>170cm x 80cm<br />€110.70</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(570, 260);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>170cm x 60cm<br />€90.88</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(570, 250);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>170cm x 50cm<br />€80.97</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(550, 300);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>150cm x 100cm<br />€118.86</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(550, 280);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>150cm x 80cm<br />€101.37</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(550, 260);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>150cm x 60cm<br />€83.89</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(550, 250);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>150cm x 50cm<br />€75.14</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(520, 300);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>120cm x 100cm<br />€101.37</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(520, 280);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>120cm x 80cm<br />€87.38</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(520, 260);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>120cm x 60cm<br />€73.39</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(520, 250);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>120cm x 50cm<br />€66.40</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(300, 300);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>100cm x 100cm<br />€89.71</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(300, 280);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>100cm x 80cm<br />€78.06</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(300, 260);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>100cm x 60cm<br />€66.40</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(300, 250);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>100cm x 50cm<br />€65.70</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(580, 280);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>80cm x 80cm<br />€64.71</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(580, 260);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>80cm x 60cm<br />€55.53</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(480, 250);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>80cm x 50cm<br />€50.14</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(70, 70);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>70cm x 70cm<br />€50.14</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(470, 260);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>70cm x 60cm<br />€45.53</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(470, 250);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>70cm x 50cm<br />€40.47</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(260, 260);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>60cm x 60cm<br />€40.47</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(260, 250);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>60cm x 50cm<br />€35.46</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(250, 250);setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>50cm x 50cm<br />€30.14</p>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="portraitf" id="portraitf" style="display: none;">
+                        <div class="size1">
+                            <h3 id="PortraitTitle" class="dropdownf">Portrait Sizes</h3>
+                            <button onclick="applySize(300, 600); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>100cm x 200cm<br />€148.00</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(280, 600); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>80cm x 200cm<br />€124.69</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(260, 600); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>60cm x 200cm<br />€101.37</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(250, 600); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>50cm x 200cm<br />€89.71</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(300, 430); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>100cm x 170cm<br />€130.51</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(280, 430); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>80cm x 170cm<br />€110.70</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(260, 430); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>60cm x 170cm<br />€90.88</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(250, 430); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>50cm x 170cm<br />€80.97</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(300, 420); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>100cm x 150cm<br />€118.86</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(280, 420); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>80cm x 150cm<br />€101.37</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(260, 420); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>60cm x 150cm<br />€83.89</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(250, 420); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>50cm x 150cm<br />€75.14</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(300, 480); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>100cm x 120cm<br />€101.37</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(280, 480); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>80cm x 120cm<br />€87.38</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(260, 480); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>60cm x 120cm<br />€73.39</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(250, 480); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>50cm x 120cm<br />€66.40</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(500, 500); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>100cm x 100cm<br />€89.71</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(520, 500); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>80cm x 100cm<br />€78.06</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(560, 500); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>60cm x 100cm<br />€66.40</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(550, 500); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>50cm x 100cm<br />€65.70</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(580, 520); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>80cm x 80cm<br />€65.70</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(560, 520); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>60cm x 80cm<br />€55.87</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(550, 520); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>50cm x 80cm<br />€52.10</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(550, 550); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>50cm x 50cm<br />€38.90</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applySize(530, 530); setButtonActivesizes(this)">
+                                <img src="<?= PLUGIN_URL ?>assets/images/portrait_0.60c4328ca9e6b4869c5a7bb07ce94316.jpg"
+                                    alt="">
+                                <p>30cm x 30cm<br />€28.90</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+               
+
+            </div>
+
+            <!-- <div id="Edges" class="tabcontent">
+                <h3>Edges</h3>
+                <div class="Edges-mobile">
+                    <div class="size1">
+                        <button class="frame-option" onclick="applyFrame('none')">
+                            <img src="/IMAGES/BB.849b07bd7c3fdcfe5f7254022f97f702.jpg" alt="">
+                            <p>None</p>
+                        </button>
+                    </div>
+                    <div class="size1">
+                        <button class="frame-option" onclick="applyFrame('black')">
+                            <img src="/IMAGES/BB.849b07bd7c3fdcfe5f7254022f97f702.jpg" alt="">
+                            <p>Black wood frame</p>
+                        </button>
+                    </div>
+                    <div class="size1">
+                        <button class="frame-option" onclick="applyFrame('white')">
+                            <img src="/IMAGES/BB.849b07bd7c3fdcfe5f7254022f97f702.jpg" alt="">
+                            <p>White wood frame</p>
+                        </button>
+                    </div>
+                    <div class="size1">
+                        <button class="frame-option" onclick="applyFrame('espresso')">
+                            <img src="/IMAGES/BB.849b07bd7c3fdcfe5f7254022f97f702.jpg" alt="">
+                            <p>Espresso wood frame</p>
+                        </button>
+                    </div>
+                    <div class="size1">
+                        <button class="frame-option" onclick="applyFrame('gold')">
+                            <img src="/IMAGES/BB.849b07bd7c3fdcfe5f7254022f97f702.jpg" alt="">
+                            <p>Golden frame</p>
+                        </button>
+                    </div>
+                    <br>
+
+                    <div id="borderOptions" class="border-options">
+                        <div class="size1">
+                            <button onclick="applyBorder('solid', 'black', '2cm')">
+                                <img src="/IMAGES/BB.849b07bd7c3fdcfe5f7254022f97f702.jpg" alt="">
+                                <p>2cm border</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applyBorder('solid', 'black', '4cm')">
+                                <img src="/IMAGES/BB.849b07bd7c3fdcfe5f7254022f97f702.jpg" alt="">
+                                <p>4cm border</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applyBorder('solid', 'black', '5cm')">
+                                <img src="/IMAGES/BB.849b07bd7c3fdcfe5f7254022f97f702.jpg" alt="">
+                                <p>5cm border</p>
+                            </button>
+                        </div>
+                        <div class="size1">
+                            <button onclick="applyBorder('solid', 'pink', '4px')">
+                                <img src="/IMAGES/BB.849b07bd7c3fdcfe5f7254022f97f702.jpg" alt="">
+                                <p>Test 4 pixel border</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            
+            
+            <div id="Filters" class="tabcontent">
+                <!-- Content for Filters Tab -->
+                <div class="filter-tab1 abc">
+                    <div class="filter-c1" onclick="applyFilter('blur')">
+                        <img src="IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="black">
+                        <p>Blur</p>
+                        <i class="tick-mark fa-solid fa-square-check"></i>
+                    </div>
+
+                    <div class="filter-c1" onclick="applyFilter('bright')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="red">
+                        <p>Bright</p>
+                        <i class="tick-mark fa-solid fa-square-check"></i>
+                    </div>
+
+                    <div class="filter-c1" onclick="applyFilter('lomo')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="blue">
+                        <p>Lomo</p>
+                        <i class="tick-mark fa-solid fa-square-check"></i>
+                    </div>
+
+                    <div class="filter-c1" onclick="applyFilter('b&w')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="green">
+                        <p>Black and white</p>
+                        <i class="tick-mark fa-solid fa-square-check"></i>
+                    </div>
+
+                    <div class="filter-c1" onclick="applyFilter('sepia')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="yellow">
+                        <p>Sepia</p>
+                        <i class="tick-mark fa-solid fa-square-check"></i>
+                    </div>
+                    <div class="filter-c1" onclick="applyFilter('vintage')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="purple">
+                        <p>Vintage </p>
+                        <i class="tick-mark fa-solid fa-square-check"></i>
+                    </div>
+                    <div class="filter-c1" onclick="applyFilter('clarity')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="orange">
+                        <p>Clarity</p>
+                        <i class="tick-mark fa-solid fa-square-check"></i>
+                    </div>
+                    <div class="filter-c1" onclick="applyFilter('majesty')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="pink">
+                        <p>Majesty</p>
+                    </div>
+
+                    <div class="filter-c1" onclick="applyFilter('nostalgia')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="cyan">
+                        <p>Nostalgia</p>
+                    </div>
+                    <div class="filter-c1" onclick="applyFilter('cross process')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="brown">
+                        <p>Cross Process</p>
+                    </div>
+                    <div class="filter-c1" onclick="applyFilter('')">
+                        <img src="/IMAGES/filter_none.11d656e7c20908a0a362c21b8e6568e5.jpg" alt="" class="filter-img"
+                            data-filter="none" data-color="">
+                        <p>none</p>
+                    </div>
+                </div>
+
+
+                <!-- to show oon mobile and tablet -->
+                <div id="Filters" class="tabcontent-for-mob">
+                    <h3>Filters</h3>
+                    <div class="Edges-mobile2 ">
+                        <!-- Content for Filters Tab -->
+                        <!-- <div class="filter-tab1 "> -->
+                        <div class="filter-c1" onclick="applyFilter('black')">
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="black">
+                            <p>Blur</p>
+                        </div>
+
+                        <div class="filter-c1" onclick="applyFilter('red')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="red">
+                            <p>Bright</p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+
+                        <div class="filter-c1" onclick="applyFilter('blue')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="blue">
+                            <p>Lomo</p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+
+                        <div class="filter-c1" onclick="applyFilter('green')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="green">
+                            <p>Black and white</p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+
+
+                        <div class="filter-c1" onclick="applyFilter('yellow')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="yellow">
+                            <p>Sepia</p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+                        <div class="filter-c1" onclick="applyFilter('purple')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="purple">
+                            <p>Vintage </p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+                        <div class="filter-c1" onclick="applyFilter('orange')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="orange">
+                            <p>Clarity</p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+                        <div class="filter-c1" onclick="applyFilter('pink')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="pink">
+                            <p>Majesty</p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+
+                        <div class="filter-c1" onclick="applyFilter('cyan')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="cyan">
+                            <p>Nostalgia</p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+                        <div class="filter-c1" onclick="applyFilter('brown')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="brown">
+                            <p>Cross Process</p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+                        <div class="filter-c1" onclick="applyFilter('none')">
+                            <img src="IMAGES/filterimage.png" alt="" class="filter-img" data-filter="none"
+                                data-color="">
+                            <p>none</p>
+                            <i class="tick-mark fa-solid fa-square-check"></i>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <div id="Services" class="tabcontent">
+                    <h3>Services</h3>
+                    <div class="services">
+                        <div class="service-none">
+                            <img src="/IMAGES/service_none.388083ac8da4ae942ddabc7c51056233.jpg" alt="">
+                            <div class="for-services-txt">
+                                <h4>None</h4>
+                            </div>
+                        </div>
+
+                        <div class="service-none">
+                            <img src="/IMAGES/hand.jpg" alt="">
+                            <div class="for-services-txt">
+                                <h4>Touch Up</h4>
+                                <p>For smaller edits such as helping with blemishes, wrinkles, lens flare, adding text,
+                                    etc.
+                                    Fee applies per image.</p>
+                                <span>0.00$</span>
+                            </div>
+                        </div>
+                        <div class="service-none">
+                            <img src="/IMAGES/Adjustment.jpg" alt="">
+                            <div class="for-services-txt">
+                                <h4>Adjustment</h4>
+                                <p>For edits that require removing things from a basic background or altering the image
+                                    itself. Fee applies per image.</p>
+                                <span>0.00$</span>
+                            </div>
+                        </div>
+                        <div class="service-none">
+                            <img src="/IMAGES/Makeover.jpg" alt="">
+                            <div class="for-services-txt">
+                                <h4>Makeover</h4>
+                                <p>For large projects such as background removals, dust/scratch removal and adding
+                                    things
+                                    into your image. Fee applies per image.</p>
+                                <span>0.00$</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <textarea
+                        placeholder="If you have any additional comments or instructions, just let us know!"></textarea>
+                </div>
+
+            </div>
+
+            <div id="Outlines" class="tabcontent outlines">
+                <h3 onclick="toggleFrame(true, 'outlines')" class="toggle-title">Outlines</h3>
+
+                <div class="sizeoutline">
+                    <button class="frame-option" onclick="applyFrame('none')">
+                        <img src="your-image-url.jpg" alt="">
+                        <p>None<br /></p>
+                    </button>
+                </div>
+                <div class="sizeoutline">
+                    <button class="frame-option" onclick="applyFrame('black-slim')">
+                        <img src="your-image-url.jpg" alt="">
+                        <p>2cm (Slim)<br /></p>
+                    </button>
+                </div>
+                <div class="sizeoutline">
+                    <button class="frame-option" onclick="applyFrame('white-slim')">
+                        <img src="your-image-url.jpg" alt="">
+                        <p>4cm (Slim)<br /></p>
+                    </button>
+                </div>
+                <div class="sizeoutline ">
+                    <button class="frame-option" onclick="applyFrame('espresso-slim')">
+                        <img src="your-image-url.jpg" alt="">
+                        <p>5cm (Slim)<br /></p>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="container-main">
+            <p>Total: €0.00</p>
+            <button id="addToCartBtn" class="add-to-cart-btn" disabled>Add to Cart</button>
+        </div>
+        <!-- Popup for Image Upload -->
+        <div id="imagePopup" class="popup1">
+            <div class="popup-content">
+                <div class="top-heading">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                    <!-- <h2>Select an image</h2> -->
+                </div>
+                <div class="upload-image1">
+                    <button class="upload-btn2">Select image</button>
+                </div>
+                <div class="popup-div">
+                    <div class="top-text">
+                        <!-- <h2>You don't have any uploaded images yet.</h2> -->
+                        <!-- <span>Upload photos directly from your device and use them in all of our builders.</span> -->
+                    </div>
+                    <button id="popupUploadBtn2" class="upload-btn" onclick="triggerFileInput()">Select image</button>
+                    <input type="file" id="popupFileInput" accept="image/*" style="display:none;" multiple>
+                    <div id="uploadedImages"></div>
+                </div>
+                <div class="show-popupo">
+                    <label for="myFileInput" class="custom-file-label">Select Image</label>
+                    <input type="file" id="myFileInput" multiple style="display: none;">
+                    <div id="uploadedImages"></div>
+                    <div id="loader" class="loader" style="display: none;"></div> <!-- Loader Element -->
+                </div>
+                <div class="bottom-text">
+                    <h2>Supported image formats:</h2>
+                    <p style="color: red;">The image dimensions must be greater than 240x180 pixels.</p>
+                    <p id="megpixelcheck" style="color: red;"></p>
+                    <p>JPG, PNG, WEBP, TIFF, HEIC or HEIF</p>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</body>
+
+</html>
